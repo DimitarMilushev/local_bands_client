@@ -2,6 +2,18 @@
 
 The client application for Local Bands. 
 
+# Setup
+- Flutter & Dart (LTE)
+- Android Studio and command line tools
+
+### Build
+- flutter pub get ~ Install packages
+- flutter pub outdated ~ Updated outdated packages
+- flutter run ~ Runs the app on the attached device (Browser by default)
+
+- dart run build_runner watch ~ Generates the riverpod and freezed files  
+
+
 # Architecture
 
 As for the architecture the components will be separated by different layers in a Clean Architecture style mixed with MVVM and Provider.

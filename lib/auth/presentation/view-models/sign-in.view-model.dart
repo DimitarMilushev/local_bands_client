@@ -1,5 +1,6 @@
 import 'package:local_bands_client/auth/application/auth.service.dart';
 import 'package:local_bands_client/router/router.config.dart';
+import 'package:local_bands_client/store/presentation/products.view.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'sign-in.view-model.g.dart';
 
@@ -14,6 +15,6 @@ class SignInViewModel extends _$SignInViewModel {
   Future<void> signIn(String email, String password) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => authService.signIn(email, password));
-    ref.read(routerProvider).go(kStoreURL);
+    ref.read(routerProvider).go(StoreView.route);
   }
 }

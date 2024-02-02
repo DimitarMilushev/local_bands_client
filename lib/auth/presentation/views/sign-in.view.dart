@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_bands_client/auth/presentation/view-models/sign-in.view-model.dart';
 
 class SignInView extends ConsumerStatefulWidget {
+  static const String route = '/sign-in';
+
   const SignInView({super.key});
 
   @override
