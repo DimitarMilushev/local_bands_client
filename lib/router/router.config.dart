@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:local_bands_client/auth/presentation/views/sign-in.view.dart';
-import 'package:local_bands_client/store/presentation/products.view.dart';
+import 'package:local_bands_client/store/presentation/views/store.view.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router.config.g.dart';

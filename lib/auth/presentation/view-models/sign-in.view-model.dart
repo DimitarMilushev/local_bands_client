@@ -1,6 +1,6 @@
 import 'package:local_bands_client/auth/application/auth.service.dart';
 import 'package:local_bands_client/router/router.config.dart';
-import 'package:local_bands_client/store/presentation/products.view.dart';
+import 'package:local_bands_client/store/presentation/views/store.view.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'sign-in.view-model.g.dart';
 
