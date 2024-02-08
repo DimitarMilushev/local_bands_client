@@ -12,7 +12,7 @@ The client application for Local Bands.
 - flutter run ~ Runs the app on the attached device (Browser by default)
 
 - dart run build_runner watch ~ Generates the riverpod and freezed files  
-- dart run build_runner watch -delete-conflicting-outputs ~ Generates the riverpod and freezed files wthout duplicates/conflicting files
+- dart run build_runner watch --delete-conflicting-outputs ~ Generates the riverpod and freezed files wthout duplicates/conflicting files
 
 # Architecture
 

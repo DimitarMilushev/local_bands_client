@@ -43,12 +43,13 @@ dependencies:
   go_router: ^13.1.0
   dio: ^5.4.0
   json_serializable: ^6.7.1
+  material_loading_buttons: ^1.2.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   # a tool for running code generators
-  build_runner: ^2.4.8
+  build_runner: ^2.1.11
   # the code generator
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -57,6 +58,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: 3.0.1
   freezed: ^2.4.6
+  monarch: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -5,3 +5,7 @@ targets:
         options:
           provider_name_suffix: "Provider" # (default)
           provider_family_name_suffix: "ProviderFamily" 
+    sources:
+      - $package$
+      - lib/**
+      - stories/**
