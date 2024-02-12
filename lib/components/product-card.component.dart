@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:local_bands_client/store/models/product.model.dart';
 
@@ -14,6 +17,7 @@ class ProductCard extends StatefulWidget {
 class ProductCardState extends State<ProductCard> {
   late final double actualPrice;
   late final double? oldPrice;
+  late final List<Uint8List> decodedPhotos;
 
   @override
   void initState() {
@@ -25,13 +29,16 @@ class ProductCardState extends State<ProductCard> {
       actualPrice = widget.product.price;
       oldPrice = null;
     }
+
+    decodedPhotos =
+        widget.product.photos.map((photo) => base64Decode(photo)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(maxHeight: 400, maxWidth: 300),
-      padding: const EdgeInsets.symmetric(vertical: 24),
+        constraints: const BoxConstraints(maxHeight: 400, maxWidth: 300),
+        padding: const EdgeInsets.symmetric(vertical: 24),
         child: GestureDetector(
             onTap: widget.onTap,
             child: Column(
@@ -40,7 +47,7 @@ class ProductCardState extends State<ProductCard> {
                 Expanded(
                   child: Stack(
                     children: [
-                      Image.network(widget.product.photo,
+                      Image.memory(decodedPhotos.first,
                           alignment: Alignment.bottomCenter, fit: BoxFit.cover),
                       Align(
                           alignment: AlignmentDirectional.bottomEnd,
@@ -58,41 +65,42 @@ class ProductCardState extends State<ProductCard> {
                 ),
                 const SizedBox(height: 12),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Flexible(child:Text(widget.product.title,
-                          style: Theme.of(context).textTheme.titleLarge)),
+                      Flexible(
+                          child: Text(widget.product.name,
+                              style: Theme.of(context).textTheme.titleLarge)),
                       Padding(
-                        padding: const EdgeInsets.only(left: 24),
-                        child: Row(
-                        children: [
-                          Text('$actualPrice €',
-                              maxLines: 1,
-                              overflow: TextOverflow.clip,
-                              softWrap: false,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.orange)),
-                          if (oldPrice != null)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text('$oldPrice €',
+                          padding: const EdgeInsets.only(left: 24),
+                          child: Row(
+                            children: [
+                              Text('$actualPrice €',
                                   maxLines: 1,
                                   overflow: TextOverflow.clip,
                                   softWrap: false,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .titleSmall
+                                      .titleLarge
                                       ?.copyWith(
-                                          decoration:
-                                              TextDecoration.lineThrough)),
-                            ),
-                        ],
-                      )),
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.orange)),
+                              if (oldPrice != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text('$oldPrice €',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.clip,
+                                      softWrap: false,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall
+                                          ?.copyWith(
+                                              decoration:
+                                                  TextDecoration.lineThrough)),
+                                ),
+                            ],
+                          )),
                     ]),
               ],
             )));

@@ -1,22 +1,27 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:local_bands_client/auth/data/dtos/sign-in.dto.dart';
+import 'package:local_bands_client/auth/data/auth.repository.dart';
+import 'package:local_bands_client/shared/session/session.provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final authServiceProvider = Provider<AuthService>((ref) {
-  return AuthService();
-}); 
+part "auth.service.g.dart";
+
+@Riverpod()
+AuthService authService(AuthServiceRef ref) => AuthService(
+      repository: ref.read(authRepositoryProvider),
+      session: ref.read(sessionProvider.notifier)
+    );
 
 class AuthService {
-  AuthService(); 
+  final AuthRepository repository;
+  final Session session;
+  AuthService({required this.repository, required this.session});
 
-  Future<void> signIn(String email, String password) {
-    final dto = SignInDto(email: email, password: password);
-
-    return Future.delayed(const Duration(seconds: 1), () {
-      print(dto);
-    });
+  Future<void> signIn(String email, String password) async {
+    final sessionData = await repository.signIn(email, password);
+    await session.begin(sessionData);
   }
 
-  Future<void> signOut() {
-    throw UnimplementedError();
+  Future<void> signOut() async {
+    await repository.signOut();
+    await session.end();
   }
 }

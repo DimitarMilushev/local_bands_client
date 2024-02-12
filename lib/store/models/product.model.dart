@@ -7,8 +7,8 @@ part "product.model.g.dart";
 class ProductModel with _$ProductModel {
   const factory ProductModel(
       {required int id,
-      required String title,
-      required String photo,
+      required String name,
+      required List<String> photos,
       required double price,
       double? discount}) = _ProductModel;
 
