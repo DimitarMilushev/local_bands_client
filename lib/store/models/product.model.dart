@@ -8,8 +8,10 @@ class ProductModel with _$ProductModel {
   const factory ProductModel(
       {required int id,
       required String name,
+      required String description,
       required List<String> photos,
       required double price,
+      required int views,
       required bool isFavorite,
       double? discount}) = _ProductModel;
 

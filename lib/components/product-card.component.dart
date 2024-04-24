@@ -150,8 +150,7 @@ class _ProductCardState extends State<ProductCard> {
                           subtitle: _ProductSubtitle(
                             price: widget.product.price,
                             discount: widget.product.discount,
-                            rating: 4.9,
-                            reviewsCount: Random().nextInt(50),
+                            viewsCount: widget.product.views,
                           )),
                       Align(
                           alignment: AlignmentDirectional.topEnd,
@@ -204,14 +203,11 @@ class _ProductFavoriteIcon extends StatelessWidget {
 
 class _ProductSubtitle extends StatelessWidget {
   final num price;
-  final num rating;
-  final int reviewsCount;
+  final num viewsCount;
   final num? discount;
   const _ProductSubtitle(
       {required this.price,
-      required this.rating,
-      required this.reviewsCount,
-      this.discount});
+      this.discount, required this.viewsCount});
 
   @override
   Widget build(BuildContext context) {
@@ -222,24 +218,16 @@ class _ProductSubtitle extends StatelessWidget {
       ),
       Row(children: [
         Icon(
-          Icons.star,
-          color: Colors.amber,
+          Icons.visibility,
           size: 16,
         ),
         SizedBox(
           width: 2,
         ),
         Text(
-          rating.toStringAsPrecision(2),
+          viewsCount.toString(),
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
         ),
-        SizedBox(
-          width: 2,
-        ),
-        Text(
-          "($reviewsCount Reviews)",
-          style: TextStyle(color: Colors.black45, fontSize: 12),
-        )
       ])
     ]);
   }

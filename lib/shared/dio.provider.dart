@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_bands_client/shared/cookie-manager.provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:dio/browser.dart';
 
 part 'dio.provider.g.dart';
 
@@ -14,12 +12,7 @@ Dio dio(DioRef ref) {
       HttpInterceptor(ref),
     ]);
 
-  if (kIsWeb) {
-    instance.httpClientAdapter =
-        BrowserHttpClientAdapter(withCredentials: true);
-  } else {
-    instance.interceptors.add(ref.read(cookieManagerProvider));
-  }
+  instance.interceptors.add(ref.read(cookieManagerProvider));
   return instance;
 }
 

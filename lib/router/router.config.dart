@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:local_bands_client/auth/presentation/views/sign-in.view.dart';
 import 'package:local_bands_client/shared/session/session.provider.dart';
+import 'package:local_bands_client/store/presentation/views/product.view.dart';
 import 'package:local_bands_client/store/presentation/views/store.view.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,21 +13,25 @@ GoRouter router(RouterRef ref) {
       ? StoreView.route
       : SignInView.route;
   final loggedOutRoutes = [
-GoRoute(
+    GoRoute(
         path: SignInView.route,
         builder: (context, state) => const SignInView()),
   ];
   final loggedInRoutes = [
-GoRoute(
-        path: StoreView.route, builder: (context, state) => const StoreView())
-  
+    GoRoute(
+        path: StoreView.route, 
+        builder: (context, state) => const StoreView(),
+        ),
+    GoRoute(
+        path: ProductView.route,
+        builder: (context, state)  {
+          print(state.pathParameters);
+          return ProductView(
+            int.parse(state.pathParameters["id"]!)
+            );
+        })
   ];
-  final routes = [
-      ...loggedOutRoutes,
-      ...loggedInRoutes
-    ];
-
-  
+  final routes = [...loggedOutRoutes, ...loggedInRoutes];
 
   return GoRouter(routes: routes, initialLocation: initialLocation);
 }

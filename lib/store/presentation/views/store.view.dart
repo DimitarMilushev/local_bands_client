@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_bands_client/components/product-card.component.dart';
+import 'package:local_bands_client/router/router.config.dart';
 import 'package:local_bands_client/store/models/product.model.dart';
 import 'package:local_bands_client/store/presentation/view-models/products.view-model.dart';
+import 'package:local_bands_client/store/presentation/views/product.view.dart';
 
 class StoreView extends ConsumerStatefulWidget {
   static const route = '/store';
@@ -36,7 +38,12 @@ class StoreViewState extends ConsumerState<StoreView> {
                   padding: EdgeInsets.symmetric(vertical: 32, horizontal: 8),
                   child: SearchBar(
                     hintText: "Looking for something?",
-                    trailing: [ IconButton(icon: Icon(Icons.filter_list), onPressed: null,)],
+                    trailing: [
+                      IconButton(
+                        icon: Icon(Icons.filter_list),
+                        onPressed: null,
+                      )
+                    ],
                   )),
               Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
@@ -66,28 +73,8 @@ class StoreViewState extends ConsumerState<StoreView> {
         .map((e) => ProductCard(
               product: e,
               onTap: () {
-                print(" showing...");
-                 showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text('This is a modal popup.'),
-                        SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('Close'),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
+                ref.read(routerProvider).go(ProductView.route
+                    .replaceAll(RegExp(":id"), e.id.toString()));
               },
             ))
         .toList();

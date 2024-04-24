@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:local_bands_client/auth/presentation/views/sign-in.view.dart';
 import 'package:local_bands_client/router/router.config.dart';
 import 'package:local_bands_client/shared/session/session.provider.dart';
+import 'package:local_bands_client/store/presentation/views/store.view.dart';
 
 void main() {
-  runApp(
-    const ProviderScope(child: 
-    App()));
+  runApp(const ProviderScope(child: App()));
 }
+
 class App extends ConsumerStatefulWidget {
   const App({super.key});
 
@@ -27,21 +28,75 @@ class _AppState extends ConsumerState {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 196, 137, 115)),
-        useMaterial3: true,
-      ),
-      routerConfig: ref.watch(routerProvider),
-      builder: (context, child) => Scaffold(
-        appBar: ref.watch(sessionProvider.notifier).isAuthenticated ? AppBar() : null,
-        body: child,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 196, 137, 115)),
+          useMaterial3: true,
         ),
+        routerConfig: ref.watch(routerProvider),
+        builder: (context, child) => ref.watch(sessionProvider).value != null
+            ? _loggedInView(child)
+            : _loggedOutView(child));
+  }
+
+  Widget _loggedOutView(Widget? child) {
+    return Scaffold(
+      body: child,
     );
   }
+
+  Widget _loggedInView(Widget? child) {
+    return Overlay(initialEntries: [
+      OverlayEntry(
+          builder: (context) => Scaffold(
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {},
+                  child: const Icon(Icons.radio),
+                  shape: CircleBorder(),
+                ),
+                extendBody: true,
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                appBar: ref.watch(sessionProvider.notifier).isAuthenticated
+                    ? AppBar()
+                    : null,
+                body: child,
+                bottomNavigationBar: BottomAppBar(
+                  shape: const CircularNotchedRectangle(),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  height: 60,
+                  color: Colors.cyan.shade400,
+                  notchMargin: 5,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      IconButton(
+                        icon: const Icon(
+                          Icons.shop,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          ref.read(routerProvider).go(StoreView.route);
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.person,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          ref.read(routerProvider).go(SignInView.route);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ))
+    ]);
+  }
 }
-
-
 // class MyAppRouterDelegate extends RouterDelegate {
 //   @override
 //   void addListener(VoidCallback listener) {
