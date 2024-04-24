@@ -28,23 +28,35 @@ class StoreViewState extends ConsumerState<StoreView> {
     AsyncValue<List<ProductModel>> productsState =
         ref.watch(productsViewModelProvider);
     return SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 8),
         child: SizedBox(
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ..._paintProductCards(productsState.value),
-          if (productsState.isLoading)
-            const Padding(
-                padding: EdgeInsets.symmetric(vertical: 64),
-                child: CircularProgressIndicator()),
-          ElevatedButton(
-              onPressed:
-                  ref.read(productsViewModelProvider.notifier).loadProducts,
-              child: const Text('Load more...'))
-        ],
-      ),
-    ));
+            width: double.infinity,
+            child: Column(children: [
+              const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 32, horizontal: 8),
+                  child: SearchBar(
+                    hintText: "Looking for something?",
+                    trailing: [ IconButton(icon: Icon(Icons.filter_list), onPressed: null,)],
+                  )),
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.center,
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children: [
+                  ..._paintProductCards(productsState.value),
+                ],
+              ),
+              if (productsState.isLoading)
+                const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 64),
+                    child: CircularProgressIndicator()),
+              ElevatedButton(
+                  onPressed:
+                      ref.read(productsViewModelProvider.notifier).loadProducts,
+                  child: const Text('Load more...')),
+              const SizedBox.square(dimension: 120),
+            ])));
   }
 
   List<ProductCard> _paintProductCards(List<ProductModel>? products) {
@@ -52,8 +64,32 @@ class StoreViewState extends ConsumerState<StoreView> {
 
     return products
         .map((e) => ProductCard(
-            key: Key(e.id.toString()),
-            product: e))
+              product: e,
+              onTap: () {
+                print(" showing...");
+                 showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text('This is a modal popup.'),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Close'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+              },
+            ))
         .toList();
   }
 }
